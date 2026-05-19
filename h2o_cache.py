@@ -14,6 +14,10 @@ import torch
 # H2O changes the cache from "keep everything" to "keep what matters":
 #   - matters = tokens that received lots of attention across past steps
 #   - plus a small window of recent tokens (so the model doesn't lose local context)
+
+#for phi-2 heres the input tensor[1,32,seq, 80] so from left to right
+#[batch size, attention heads, tokens processed(depends on where we are), head dimension]
+#head dimension = full embedding size / num heads = 2560 / 32 = 80 (each head gets its own slice)
 class H2OCache:
     def __init__(self, max_cache_size, local_window_size, num_layers):
         # safety check — if window > budget, math below breaks
